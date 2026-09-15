@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEMORI | Functional Breakfast Bar</title>
+<meta name="description" content="TEMORI is a plant-based functional breakfast bar concept combining locally available ingredients with protein, iron, and dietary fiber for adolescent nutrition.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5EFE0;
+    --cream-deep:#EDE3CB;
+    --ink:#2B2118;
+    --green:#3A5A40;
+    --green-deep:#26392B;
+    --brown:#7A5230;
+    --tan:#C9A876;
+    --rust:#A84B2A;
+    --line:rgba(43,33,24,0.14);
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Work Sans', sans-serif; font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif; font-weight:600; color:var(--green-deep);
+    margin:0; letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,239,224,0.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; max-width:1080px; margin:0 auto;}
+  .nav .mark{font-family:'Fraunces', serif; font-weight:700; font-size:22px; color:var(--green-deep); text-decoration:none;}
+  .nav ul{list-style:none; display:flex; gap:26px; margin:0; padding:0;}
+  .nav a.link{text-decoration:none; font-size:14.5px; color:var(--ink); opacity:0.75; transition:opacity .15s;}
+  .nav a.link:hover{opacity:1;}
+  .nav-toggle{display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--ink);}
+  @media (max-width:820px){
+    .nav ul{display:none;}
+    .nav-toggle{display:block;}
+    .nav ul.open{
+      display:flex; flex-direction:column; gap:0;
+      position:absolute; top:64px; left:0; right:0;
+      background:var(--cream); border-bottom:1px solid var(--line); padding:8px 20px 18px;
+    }
+    .nav ul.open li{padding:10px 0; border-bottom:1px solid var(--line);}
+  }
+
+  .hero{
+    padding:88px 0 64px;
+    background:radial-gradient(ellipse at top right, rgba(58,90,64,0.10), transparent 55%), var(--cream);
+    overflow:hidden;
+  }
+  .hero-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:56px; align-items:center;}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{font-size:13.5px; color:var(--brown); font-weight:600; margin-bottom:18px;}
+  .hero h1{font-size:clamp(50px,8.5vw,86px); line-height:0.94; color:var(--green-deep);}
+  .hero .lead{
+    font-family:'Fraunces', serif; font-weight:500; font-size:clamp(24px,3.2vw,32px);
+    color:var(--rust); margin-top:16px; line-height:1.2;
+  }
+  .hero p.desc{margin-top:22px; font-size:16px; max-width:44ch; opacity:0.85;}
+  .hero-cta{margin-top:32px;}
+  .btn{
+    display:inline-block; padding:13px 26px; border-radius:var(--radius);
+    text-decoration:none; font-size:14.5px; font-weight:600;
+    border:1px solid var(--green-deep); transition:transform .15s ease, background .15s ease;
+  }
+  .btn.primary{background:var(--green-deep); color:var(--cream);}
+  .btn.primary:hover{transform:translateY(-2px); background:var(--green);}
+  .btn.ghost{background:transparent; color:var(--green-deep); margin-left:12px;}
+  .btn.ghost:hover{transform:translateY(-2px); background:rgba(58,90,64,0.08);}
+
+  section{padding:88px 0;}
+  section.alt{background:var(--cream-deep);}
+  .kicker{font-family:'Fraunces', serif; font-style:italic; font-size:15px; color:var(--rust); margin-bottom:10px;}
+  .section-head{max-width:640px; margin-bottom:44px;}
+  .section-head h2{font-size:clamp(28px,4vw,38px); line-height:1.1;}
+  .section-head p{margin-top:14px; opacity:0.82; font-size:16px;}
+
+  .card-grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:820px){ .card-grid3{grid-template-columns:1fr;} }
+  .card{background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); padding:28px 26px;}
+  .card .emoji{font-size:28px; margin-bottom:14px; display:block;}
+  .card h3{font-size:19px; margin-bottom:8px;}
+  .card p{font-size:14.5px; opacity:0.85; margin:0;}
+
+  .focus-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  @media (max-width:760px){ .focus-grid{grid-template-columns:1fr;} }
+  .focus-item{padding:30px 26px; border-right:1px solid var(--line);}
+  .focus-grid > .focus-item:last-child{border-right:none;}
+  .focus-item h4{font-family:'Fraunces', serif; font-size:19px; color:var(--green-deep); margin-bottom:8px;}
+  .focus-item p{font-size:14.5px; opacity:0.82; margin:0;}
+
+  .note-card{
+    margin-top:32px; padding:22px 24px; border-left:3px solid var(--rust);
+    background:rgba(168,75,42,0.06); font-size:14.5px; line-height:1.65;
+  }
+  .note-card strong{color:var(--rust); display:block; margin-bottom:6px; font-family:'Fraunces',serif; font-size:15px;}
+
+  .process{display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  @media (max-width:760px){ .process{grid-template-columns:1fr 1fr;} }
+  @media (max-width:480px){ .process{grid-template-columns:1fr;} }
+  .step{padding:28px 22px; border-right:1px solid var(--line);}
+  .process > .step:last-child{border-right:none;}
+  .step .n{font-family:'Fraunces', serif; font-size:13px; color:var(--rust); font-weight:600;}
+  .step h4{font-family:'Fraunces', serif; font-size:18px; color:var(--green-deep); margin:10px 0 6px;}
+  .step p{font-size:13.5px; opacity:0.78; margin:0;}
+
+  .sdg-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:820px){ .sdg-grid{grid-template-columns:1fr;} }
+  .sdg-card{border-radius:var(--radius); padding:26px 24px; color:var(--cream);}
+  .sdg-card.g2{background:#C8A32B;}
+  .sdg-card.g3{background:var(--green-deep);}
+  .sdg-card.g12{background:var(--brown);}
+  .sdg-card .tag{font-family:'Fraunces', serif; font-weight:700; font-size:15px; opacity:0.85;}
+  .sdg-card h4{color:var(--cream); font-size:19px; margin:8px 0 8px;}
+  .sdg-card p{font-size:14px; opacity:0.9; margin:0;}
+
+  .quiz-box{
+    max-width:620px; background:var(--cream); border:1px solid var(--line);
+    border-radius:var(--radius); padding:32px 30px;
+  }
+  .quiz-box h3{font-size:20px; margin-bottom:20px; line-height:1.35;}
+  .quiz-option{
+    display:flex; align-items:center; gap:12px; padding:13px 16px;
+    border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px;
+    cursor:pointer; font-size:15px; transition:border-color .15s, background .15s;
+  }
+  .quiz-option:hover{border-color:var(--green);}
+  .quiz-option input{accent-color:var(--green-deep);}
+  .quiz-option.correct{border-color:var(--green); background:rgba(58,90,64,0.10);}
+  .quiz-option.incorrect{border-color:var(--rust); background:rgba(168,75,42,0.08);}
+  .quiz-submit{margin-top:14px;}
+  .quiz-feedback{margin-top:16px; font-size:14.5px; display:none; padding:14px 16px; border-radius:var(--radius);}
+  .quiz-feedback.show{display:block;}
+  .quiz-feedback.ok{background:rgba(58,90,64,0.10); color:var(--green-deep);}
+  .quiz-feedback.no{background:rgba(168,75,42,0.08); color:var(--rust);}
+
+  .research-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;}
+  @media (max-width:860px){ .research-grid{grid-template-columns:1fr; gap:34px;} }
+  .poster-frame{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:#fff;}
+  .poster-frame img{width:100%; height:auto; display:block;}
+  .poster-cap{font-size:13px; opacity:0.6; margin-top:10px;}
+  .researchers{list-style:none; margin:18px 0 0; padding:0;}
+  .researchers li{
+    padding:12px 0; border-bottom:1px solid var(--line); font-size:15.5px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .researchers li:last-child{border-bottom:none;}
+  .researchers .dot{width:6px; height:6px; border-radius:50%; background:var(--rust); flex:none;}
+
+  .partners{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:44px; padding:20px 0 0;}
+  .partner-item{font-family:'Fraunces', serif; font-weight:600; font-size:14.5px; color:var(--brown); opacity:0.85; text-align:center;}
+  .partner-item span{display:block; font-family:'Work Sans',sans-serif; font-weight:400; font-size:11.5px; color:var(--ink); opacity:0.6; margin-top:2px;}
+
+  footer{background:var(--green-deep); color:var(--cream); padding:56px 0 30px;}
+  .footer-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px;}
+  @media (max-width:700px){ .footer-grid{grid-template-columns:1fr; gap:30px;} }
+  footer h3{color:var(--cream); font-size:24px;}
+  footer p{opacity:0.75; font-size:14.5px; margin-top:12px; max-width:34ch;}
+  footer h5{font-size:12.5px; letter-spacing:0.04em; color:var(--tan); margin-bottom:14px; text-transform:uppercase; font-weight:600;}
+  footer ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  footer a{text-decoration:none; opacity:0.8; font-size:14.5px;}
+  footer a:hover{opacity:1;}
+  .foot-bottom{margin-top:46px; padding-top:22px; border-top:1px solid rgba(245,239,224,0.15); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px; opacity:0.6;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} html{scroll-behavior:auto;} }
+
+  .quiz-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(24,31,25,.48);
+    opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+  }
+  .quiz-overlay.open{opacity:1; visibility:visible;}
+  .quiz-drawer{
+    position:absolute; top:0; right:0; height:100%; width:min(620px,100%);
+    background:var(--cream); border-left:1px solid var(--line);
+    box-shadow:-18px 0 50px rgba(0,0,0,.18);
+    transform:translateX(100%); transition:transform .38s cubic-bezier(.22,.8,.22,1);
+    overflow-y:auto; padding:34px;
+  }
+  .quiz-overlay.open .quiz-drawer{transform:translateX(0);}
+  .quiz-close{
+    position:absolute; right:22px; top:16px; width:40px; height:40px;
+    border:1px solid var(--line); background:var(--cream); color:var(--ink);
+    border-radius:50%; font-size:24px; cursor:pointer;
+  }
+  .quiz-top{padding-right:48px; margin-bottom:30px;}
+  .quiz-top .kicker{margin-bottom:5px;}
+  .quiz-count{font-size:13px; opacity:.65; margin-top:8px;}
+  .quiz-progress{height:7px; background:var(--cream-deep); margin-top:14px; overflow:hidden;}
+  .quiz-progress span{display:block;height:100%;width:0;background:var(--green);transition:width .3s ease;}
+  .quiz-question{font-family:'Fraunces',serif;font-size:26px;line-height:1.25;color:var(--green-deep);margin-bottom:22px;}
+  .quiz-choice{
+    display:flex; align-items:flex-start; gap:12px; padding:15px 16px;
+    border:1px solid var(--line); background:var(--cream); margin:10px 0;
+    cursor:pointer; transition:.15s; font-size:15px;
+  }
+  .quiz-choice:hover{border-color:var(--green);}
+  .quiz-choice.selected{border-color:var(--green);background:rgba(58,90,64,.08);}
+  .quiz-choice.correct{border-color:var(--green);background:rgba(58,90,64,.13);}
+  .quiz-choice.incorrect{border-color:var(--rust);background:rgba(168,75,42,.09);}
+  .quiz-choice input{margin-top:4px;accent-color:var(--green-deep);}
+  .quiz-action{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;}
+  .quiz-action button{cursor:pointer;}
+  .quiz-message{display:none;margin-top:18px;padding:14px 16px;font-size:14px;border-left:3px solid var(--green);background:rgba(58,90,64,.08);}
+  .quiz-message.show{display:block;}
+  .quiz-result{text-align:center;padding:50px 5px;}
+  .quiz-result .score{font-family:'Fraunces',serif;font-size:64px;color:var(--green-deep);line-height:1;}
+  .quiz-start-btn{cursor:pointer;border:0;}
+  body.quiz-open{overflow:hidden;}
+
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="mark">TEMORI</a>
+    <button class="nav-toggle" aria-label="Toggle menu" onclick="document.getElementById('navlist').classList.toggle('open')">☰</button>
+    <ul id="navlist">
+      <li><a class="link" href="#about">About</a></li>
+      <li><a class="link" href="#nutrition">Nutrition</a></li>
+      <li><a class="link" href="#process">Process</a></li>
+      <li><a class="link" href="#impact">Impact</a></li>
+      <li><a class="link" href="#quiz">Quiz</a></li>
+      <li><a class="link" href="#research">Research</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Functional breakfast bar</div>
+        <h1>Start the day stronger.</h1>
+        <p class="lead">TEMORI is a plant-based functional breakfast bar concept for adolescent nutrition.</p>
+        <p class="desc">Developed as a practical nutritional intervention, TEMORI combines locally available ingredients with protein, iron, and dietary fiber — built for growing bodies with busy mornings.</p>
+        <div class="hero-cta">
+          <a href="#about" class="btn primary">Explore TEMORI ↓</a>
+          <a href="#research" class="btn ghost">Meet the researchers</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g opacity="0.5">
+            <path d="M20 60 Q120 20 220 60 T420 60" stroke="#7A5230" stroke-width="1.4" fill="none" opacity="0.35"/>
+            <path d="M10 100 Q130 50 250 100 T430 100" stroke="#3A5A40" stroke-width="1.4" fill="none" opacity="0.3"/>
+          </g>
+          <g>
+            <rect x="60" y="150" width="300" height="70" rx="6" fill="#C9A876" stroke="#2B2118" stroke-width="2"/>
+            <rect x="60" y="150" width="300" height="70" rx="6" fill="url(#speckle)" opacity="0.5"/>
+            <rect x="60" y="230" width="300" height="70" rx="6" fill="#B8955F" stroke="#2B2118" stroke-width="2"/>
+            <rect x="60" y="230" width="300" height="70" rx="6" fill="url(#speckle)" opacity="0.5"/>
+          </g>
+          <g fill="#3A5A40">
+            <ellipse cx="95" cy="175" rx="7" ry="4.5" transform="rotate(20 95 175)"/>
+            <ellipse cx="140" cy="185" rx="7" ry="4.5" transform="rotate(-15 140 185)"/>
+            <ellipse cx="210" cy="165" rx="7" ry="4.5" transform="rotate(35 210 165)"/>
+            <ellipse cx="290" cy="182" rx="7" ry="4.5" transform="rotate(-25 290 182)"/>
+            <ellipse cx="330" cy="170" rx="7" ry="4.5" transform="rotate(10 330 170)"/>
+            <ellipse cx="120" cy="255" rx="7" ry="4.5" transform="rotate(-20 120 255)"/>
+            <ellipse cx="260" cy="248" rx="7" ry="4.5" transform="rotate(15 260 248)"/>
+            <ellipse cx="310" cy="265" rx="7" ry="4.5" transform="rotate(-30 310 265)"/>
+          </g>
+          <g fill="#F5EFE0" opacity="0.85">
+            <circle cx="80" cy="200" r="3"/><circle cx="105" cy="210" r="3"/><circle cx="160" cy="195" r="3"/>
+            <circle cx="200" cy="205" r="3"/><circle cx="240" cy="195" r="3"/><circle cx="270" cy="210" r="3"/>
+            <circle cx="320" cy="198" r="3"/><circle cx="345" cy="208" r="3"/>
+            <circle cx="90" cy="275" r="3"/><circle cx="150" cy="265" r="3"/><circle cx="190" cy="280" r="3"/>
+            <circle cx="230" cy="270" r="3"/><circle cx="280" cy="278" r="3"/><circle cx="330" cy="268" r="3"/>
+          </g>
+          <defs>
+            <pattern id="speckle" width="18" height="18" patternUnits="userSpaceOnUse">
+              <circle cx="4" cy="4" r="1.1" fill="#2B2118" opacity="0.3"/>
+              <circle cx="12" cy="11" r="1.1" fill="#2B2118" opacity="0.25"/>
+            </pattern>
+          </defs>
+          <rect x="130" y="320" width="160" height="34" rx="17" fill="#26392B"/>
+          <text x="210" y="342" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#F5EFE0" font-weight="600">Protein · Iron · Fiber</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Introduction</p>
+        <h2>What is TEMORI?</h2>
+      </div>
+      <div class="card-grid3">
+        <div class="card reveal">
+          <span class="emoji">🥜</span>
+          <h3>Plant-based</h3>
+          <p>Designed using locally sourced plant ingredients to provide a practical, convenient breakfast option.</p>
+        </div>
+        <div class="card reveal">
+          <span class="emoji">🩸</span>
+          <h3>Nutritional focus</h3>
+          <p>Concentrated on supporting adequate intake of protein, iron, and fiber — nutrients particularly relevant to adolescent nutrition.</p>
+        </div>
+        <div class="card reveal">
+          <span class="emoji">🌱</span>
+          <h3>Local innovation</h3>
+          <p>By prioritizing accessible ingredients, TEMORI shows how local food resources can become functional products.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="nutrition" class="alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Why it matters</p>
+        <h2>Nutrition should be practical.</h2>
+        <p>Adolescence is a period of rapid growth. A convenient food product can help make nutritious choices easier to reach — especially when busy schedules make it easy to skip breakfast.</p>
+      </div>
+      <h3 style="font-size:20px; margin-bottom:0;">Key focus: protein, iron &amp; fiber</h3>
+      <div class="focus-grid reveal" style="margin-top:22px;">
+        <div class="focus-item">
+          <h4>Protein</h4>
+          <p>Supports normal growth and maintenance of body tissues.</p>
+        </div>
+        <div class="focus-item">
+          <h4>Iron</h4>
+          <p>An essential micronutrient involved in normal oxygen transport in the body.</p>
+        </div>
+        <div class="focus-item">
+          <h4>Dietary fiber</h4>
+          <p>Contributes to a balanced diet and supports normal digestive function.</p>
+        </div>
+      </div>
+      <div class="note-card reveal">
+        <strong>Important note</strong>
+        TEMORI is presented as a functional food concept and is not intended to diagnose, treat, cure, or replace professional medical care for anemia or other nutritional conditions. Actual nutritional values should be confirmed through laboratory analysis of the final formulation.
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">From ingredients to bar</p>
+        <h2>How TEMORI is developed</h2>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="process reveal">
+        <div class="step">
+          <div class="n">01</div>
+          <h4>Ingredient preparation</h4>
+          <p>Selected ingredients are prepared and processed into suitable forms.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h4>Mixing</h4>
+          <p>Ingredients are combined according to the intended formulation.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h4>Molding &amp; baking</h4>
+          <p>The mixture is shaped into bars and processed into the final product.</p>
+        </div>
+        <div class="step">
+          <div class="n">04</div>
+          <h4>Cooling &amp; packaging</h4>
+          <p>Bars are cooled before packaging and evaluation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="impact" class="alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Bigger impact</p>
+        <h2>More than just a snack.</h2>
+      </div>
+      <div class="sdg-grid reveal">
+        <div class="sdg-card g2">
+          <div class="tag">SDG 2</div>
+          <h4>Zero Hunger</h4>
+          <p>Encouraging accessible and nutritious food innovation.</p>
+        </div>
+        <div class="sdg-card g3">
+          <div class="tag">SDG 3</div>
+          <h4>Good Health &amp; Well-being</h4>
+          <p>Promoting awareness of balanced nutrition among adolescents.</p>
+        </div>
+        <div class="sdg-card g12">
+          <div class="tag">SDG 12</div>
+          <h4>Responsible Consumption</h4>
+          <p>Highlighting the potential of locally available food resources.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Learn with TEMORI</p>
+        <h2>Test your knowledge.</h2>
+        <p>Take a short five-question quiz about TEMORI, nutrition, and its sustainability goals. The quiz slides in from the side so visitors can answer without leaving the page.</p>
+      </div>
+      <div class="quiz-box reveal">
+        <h3>Ready to see how much you know about TEMORI?</h3>
+        <button type="button" class="btn primary quiz-start-btn" onclick="openQuiz()">Start the quiz →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="research" class="alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Research &amp; education</p>
+        <h2>Explore the project behind the product.</h2>
+        <p>This website is an educational companion to the TEMORI research poster — helping visitors understand the problem, product concept, nutritional focus, development process, and sustainability goals.</p>
+      </div>
+      <div class="research-grid">
+        <div class="reveal">
+          <div class="poster-frame">
+            <img src="assets/temori-poster.png" alt="TEMORI research poster: Tempe-Bar, development and optimization of a tempe-moringa functional breakfast bar for adolescent nutrition">
+          </div>
+          <p class="poster-cap">The full TEMORI research poster, presented at WICE 2025.</p>
+        </div>
+        <div class="reveal">
+          <h3 style="font-size:20px;">Researchers</h3>
+          <ul class="researchers">
+            <li><span class="dot"></span> Sultan Muhammad A.R</li>
+            <li><span class="dot"></span> Muhammad Kenjiro W.A</li>
+            <li><span class="dot"></span> Gaza Langgai Generasi Suardin</li>
+          </ul>
+          <div class="partners" style="justify-content:flex-start; padding-top:32px;">
+            <div class="partner-item">WICE 2025<span>World Invention Competition &amp; Exhibition</span></div>
+            <div class="partner-item">IYSA<span>Indonesian Young Scientist Association</span></div>
+            <div class="partner-item">SEGi University<span>Kota Damansara, Malaysia</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap footer-grid">
+    <div>
+      <h3>TEMORI</h3>
+      <p>Functional Breakfast Bar • Nutrition • Innovation • Local Potential</p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#nutrition">Nutrition</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="mailto:team@temori.example">team@temori.example</a></li>
+        <li><a href="#research">Research poster</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 TEMORI Educational Project</span>
+    <span>Presented at WICE 2025, SEGi University</span>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12});
+    els.forEach(el=>io.observe(el));
+  } else { els.forEach(el=>el.classList.add('in')); }
+
+  const quizQuestions = [
+    {
+      q:"Which nutrient is particularly important for normal oxygen transport in the body?",
+      options:["Dietary fiber","Iron","Water","Protein"],
+      answer:1,
+      feedback:"Iron is an essential micronutrient involved in normal oxygen transport in the body."
+    },
+    {
+      q:"Which nutrient supports normal growth and maintenance of body tissues?",
+      options:["Protein","Iron","Dietary fiber","Water"],
+      answer:0,
+      feedback:"Protein supports normal growth and maintenance of body tissues."
+    },
+    {
+      q:"Which SDG focuses on Responsible Consumption and Production?",
+      options:["SDG 2","SDG 3","SDG 12","SDG 14"],
+      answer:2,
+      feedback:"SDG 12 is the United Nations Sustainable Development Goal for Responsible Consumption and Production."
+    },
+    {
+      q:"Why is consistent ingredient measurement useful when developing a food product?",
+      options:["It helps make batches more consistent","It guarantees there are no allergens","It removes the need for hygiene","It makes all ingredients nutritionally identical"],
+      answer:0,
+      feedback:"Consistent measurements help keep formulation and product characteristics more consistent between batches."
+    },
+    {
+      q:"What best describes the purpose of a functional food concept such as TEMORI?",
+      options:["A food designed only for decoration","A food developed with a particular nutritional or health-related purpose","A food that contains no calories","A food that must replace every meal"],
+      answer:1,
+      feedback:"A functional food is developed or presented with a particular nutritional or health-related purpose."
+    }
+  ];
+
+  let quizIndex=0, quizScore=0, quizAnswered=false;
+
+  function openQuiz(){
+    document.getElementById('quizOverlay').classList.add('open');
+    document.body.classList.add('quiz-open');
+    quizIndex=0; quizScore=0; renderQuizQuestion();
+  }
+  function closeQuiz(){
+    document.getElementById('quizOverlay').classList.remove('open');
+    document.body.classList.remove('quiz-open');
+  }
+  function renderQuizQuestion(){
+    quizAnswered=false;
+    const item=quizQuestions[quizIndex];
+    const pct=(quizIndex/quizQuestions.length)*100;
+    const content=document.getElementById('quizDrawerContent');
+    content.innerHTML=`
+      <div class="quiz-top">
+        <p class="kicker">TEMORI quiz</p>
+        <div class="quiz-count">Question ${quizIndex+1} of ${quizQuestions.length}</div>
+        <div class="quiz-progress"><span style="width:${pct}%"></span></div>
+      </div>
+      <div class="quiz-question">${item.q}</div>
+      <div id="quizChoices">
+        ${item.options.map((option,i)=>`
+          <label class="quiz-choice" onclick="selectQuizChoice(this)">
+            <input type="radio" name="temoriQuiz" value="${i}">
+            <span>${String.fromCharCode(65+i)}. ${option}</span>
+          </label>`).join('')}
+      </div>
+      <div class="quiz-message" id="quizMessage"></div>
+      <div class="quiz-action">
+        <button type="button" class="btn primary" id="quizSubmit" onclick="submitQuizAnswer()">Check answer</button>
+      </div>`;
+  }
+  function selectQuizChoice(label){
+    if(quizAnswered)return;
+    document.querySelectorAll('.quiz-choice').forEach(x=>x.classList.remove('selected'));
+    label.classList.add('selected');
+    label.querySelector('input').checked=true;
+  }
+  function submitQuizAnswer(){
+    if(quizAnswered)return;
+    const selected=document.querySelector('input[name="temoriQuiz"]:checked');
+    const message=document.getElementById('quizMessage');
+    if(!selected){
+      message.textContent="Please choose an answer first.";
+      message.className="quiz-message show";
+      return;
+    }
+    quizAnswered=true;
+    const chosen=Number(selected.value);
+    const item=quizQuestions[quizIndex];
+    const choices=document.querySelectorAll('.quiz-choice');
+    choices[chosen].classList.add(chosen===item.answer?'correct':'incorrect');
+    choices[item.answer].classList.add('correct');
+    if(chosen===item.answer)quizScore++;
+    message.textContent=(chosen===item.answer?"Correct! ":"Not quite. ")+item.feedback;
+    message.className="quiz-message show";
+    document.getElementById('quizSubmit').textContent=
+      quizIndex===quizQuestions.length-1?"See result":"Next question";
+    document.getElementById('quizSubmit').onclick=()=>{
+      if(quizIndex===quizQuestions.length-1)showQuizResult();
+      else {quizIndex++;renderQuizQuestion();}
+    };
+  }
+  function showQuizResult(){
+    const pct=Math.round((quizScore/quizQuestions.length)*100);
+    let text=pct===100?"Excellent — you mastered the TEMORI basics!":
+      pct>=60?"Good job — you have a solid understanding of TEMORI!":
+      "Keep exploring the sections of the website and try the quiz again!";
+    document.getElementById('quizDrawerContent').innerHTML=`
+      <div class="quiz-result">
+        <p class="kicker">Quiz complete</p>
+        <h2>Your score</h2>
+        <div class="score">${quizScore}/${quizQuestions.length}</div>
+        <p>${pct}% correct</p>
+        <p>${text}</p>
+        <button type="button" class="btn primary" onclick="openQuiz()">Try again</button>
+      </div>`;
+  }
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQuiz();});
+</script>
+
+  <div class="quiz-overlay" id="quizOverlay" onclick="if(event.target===this)closeQuiz()">
+    <aside class="quiz-drawer" role="dialog" aria-modal="true" aria-labelledby="quizDrawerTitle">
+      <button class="quiz-close" type="button" aria-label="Close quiz" onclick="closeQuiz()">×</button>
+      <div id="quizDrawerContent">
+        <div class="quiz-result">
+          <p class="kicker">TEMORI quiz</p>
+          <h2 id="quizDrawerTitle">Ready?</h2>
+          <button type="button" class="btn primary" onclick="openQuiz()">Start</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</body>
+</html>
